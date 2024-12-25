@@ -9,18 +9,22 @@ API_URL_NEW_MESSAGES = "https://aibytec-bot-4da4777c8a3f.herokuapp.com/api/has_n
 st.title("Chatbot Message Viewer")
 st.write("Messages received via WhatsApp:")
 
-# Function to fetch messages
-def fetch_messages():
+last_message_placeholder = st.empty()
+
+# Function to fetch the last message
+def fetch_last_message():
     try:
-        response = requests.get(API_URL_MESSAGES)
+        response = requests.get(API_URL_LAST_MESSAGE)
         if response.status_code == 200:
             return response.json()
+        elif response.status_code == 404:
+            return {"from": "System", "body": "No messages available", "timestamp": ""}
         else:
-            st.error(f"Error fetching messages: {response.status_code}")
-            return []
+            st.error(f"Error fetching last message: {response.status_code}")
+            return None
     except Exception as e:
         st.error(f"Error: {e}")
-        return []
+        return None
 
 # Function to check for new messages
 def has_new_messages():
@@ -37,20 +41,18 @@ def has_new_messages():
 messages_placeholder = st.empty()
 
 # Polling loop
-st.write("Waiting for new messages...")
+st.write("Waiting for the latest message...")
+last_displayed_message = None
 while True:
-    if has_new_messages():
-        messages = fetch_messages()
-        length = len(messages)
-        with messages_placeholder.container():
-            st.write("New messages received:")
-            st.write(f"Bot: {messages[length-1]}")
-            # for msg in messages:
-                # st.write(f"**From:** {msg['from']}")
-                # st.write(f"**Message:** {msg['body']}")
-                # st.write(f"**Timestamp:** {msg['timestamp']}")
-                # st.write("---")
-    time.sleep(2)  # Poll every 5 seconds
+    last_message = fetch_last_message()
+    if last_message and last_message != last_displayed_message:
+        last_displayed_message = last_message
+        with last_message_placeholder.container():
+            st.write(f"**From:** {last_message['from']}")
+            st.write(f"**Message:** {last_message['body']}")
+            st.write(f"**Timestamp:** {last_message['timestamp']}")
+            st.write("---")
+    time.sleep(5)  # Poll every 5 seconds
 
 
 
