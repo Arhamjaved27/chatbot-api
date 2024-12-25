@@ -48,7 +48,7 @@ while True:
                 st.write(f"**Message:** {msg['body']}")
                 st.write(f"**Timestamp:** {msg['timestamp']}")
                 st.write("---")
-    time.sleep(5)  # Poll every 5 seconds
+    time.sleep(2)  # Poll every 5 seconds
 
 
 
