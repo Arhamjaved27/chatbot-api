@@ -14,7 +14,7 @@ last_message_placeholder = st.empty()
 # Function to fetch the last message
 def fetch_last_message():
     try:
-        response = requests.get(API_URL_LAST_MESSAGE)
+        response = requests.get(API_URL_MESSAGES)
         if response.status_code == 200:
             return response.json()
         elif response.status_code == 404:
