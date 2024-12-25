@@ -41,13 +41,15 @@ st.write("Waiting for new messages...")
 while True:
     if has_new_messages():
         messages = fetch_messages()
+        length = len(messages)
         with messages_placeholder.container():
             st.write("New messages received:")
-            for msg in messages:
-                st.write(f"**From:** {msg['from']}")
-                st.write(f"**Message:** {msg['body']}")
-                st.write(f"**Timestamp:** {msg['timestamp']}")
-                st.write("---")
+            st.write(f"Bot: {messages[length-1]}")
+            # for msg in messages:
+                # st.write(f"**From:** {msg['from']}")
+                # st.write(f"**Message:** {msg['body']}")
+                # st.write(f"**Timestamp:** {msg['timestamp']}")
+                # st.write("---")
     time.sleep(2)  # Poll every 5 seconds
 
 
