@@ -20,7 +20,7 @@ def fetch_last_message():
         elif response.status_code == 404:
             return {"from": "System", "body": "No messages available", "timestamp": ""}
         else:
-            st.error(f"Error fetching last message: {response.status_code}")
+            # st.error(f"Error fetching last message: {response.status_code}")
             return None
     except Exception as e:
         st.error(f"Error: {e}")
