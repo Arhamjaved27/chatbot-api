@@ -47,14 +47,13 @@ last_displayed_message = None
 while True:
     if has_new_messages():
         latest_message = fetch_last_message()
-        with latest_message_placeholder.container():
-            st.write("**New message received:**")
-            if latest_message:
-                st.write(f"**From:** {latest_message.get('from')}")
-                st.write(f"**Message:** {latest_message.get('body')}")
-                st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
-            else:
-                st.write("No messages available.")
+        st.write("**New message received:**")
+        if latest_message:
+            st.write(f"**From:** {latest_message.get('from')}")
+            st.write(f"**Message:** {latest_message.get('body')}")
+            st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
+        else:
+            st.write("No messages available.")
     time.sleep(5)  # Poll every 5 seconds
 
 
