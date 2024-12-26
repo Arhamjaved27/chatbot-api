@@ -47,8 +47,6 @@ while True:
                 st.write(f"**From:** {latest_message.get('from')}")
                 st.write(f"**Message:** {latest_message.get('body')}")
                 st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
-            else:
-                st.write("No messages available.")
     time.sleep(5)  # Poll every 5 seconds
 
 
