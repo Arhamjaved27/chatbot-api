@@ -17,7 +17,7 @@ def fetch_last_message():
     try:
         response = requests.get(API_URL_LATEST_MESSAGE)
         if response.status_code == 200:
-            return response.json()
+            return response
         else:
             st.error(f"Error fetching the latest message: {response.status_code}")
             return {}
@@ -47,9 +47,7 @@ while True:
         with latest_message_placeholder.container():
             st.write("**New message received:**")
             if latest_message:
-                st.write(f"**From:** {latest_message.get('from')}")
-                st.write(f"**Message:** {latest_message.get('body')}")
-                st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
+                st.write(f"**Message:** {latest_message}")
             else:
                 st.write("No messages available.")
     time.sleep(5)  # Poll every 5 seconds
