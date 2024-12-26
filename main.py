@@ -1,23 +1,20 @@
-
 import streamlit as st
 import requests
 import time
 
 # Flask API endpoints
-API_URL_MESSAGES = "https://aibytec-bot-4da4777c8a3f.herokuapp.com/api/messages"
-API_URL_NEW_MESSAGES = "https://aibytec-bot-4da4777c8a3f.herokuapp.com/api/has_new_messages"
+API_URL_LATEST_MESSAGE = "https://aibytec-bot-4da4777c8a3f.herokuapp.com/api/messages"
+API_URL_NEW_MESSAGE = "https://aibytec-bot-4da4777c8a3f.herokuapp.com/api/has_new_messages"
 
-st.title("Chatbot Message Viewer")
-st.write("Messages received via WhatsApp:")
+st.title("Chatbot Latest Message Viewer")
+st.write("Displaying the most recent message body received via WhatsApp:")
 
-last_message_placeholder = st.empty()
-
-# Function to fetch the last message
-def fetch_last_message():
+# Function to fetch the latest message body
+def fetch_latest_message():
     try:
         response = requests.get(API_URL_LATEST_MESSAGE)
         if response.status_code == 200:
-            return response
+            return response.json()
         else:
             st.error(f"Error fetching the latest message: {response.status_code}")
             return {}
@@ -25,9 +22,8 @@ def fetch_last_message():
         st.error(f"Error: {e}")
         return {}
 
-
-# Function to check for new messages
-def has_new_messages():
+# Function to check if there is a new message
+def has_new_message():
     try:
         response = requests.get(API_URL_NEW_MESSAGE)
         if response.status_code == 200:
@@ -37,13 +33,14 @@ def has_new_messages():
     except Exception as e:
         return False
 
+# Placeholder to display the latest message
 latest_message_placeholder = st.empty()
 
-# Polling loop to check for new messages
+# Polling loop
 st.write("Waiting for new messages...")
 while True:
-    if has_new_messages():
-        latest_message = fetch_last_message()
+    if has_new_message():
+        latest_message = fetch_latest_message()
         with latest_message_placeholder.container():
             st.write("**New message received:**")
             if latest_message:
@@ -55,7 +52,9 @@ while True:
 
 
 
-    # last_message = fetch_last_message()
+
+
+# last_message = fetch_last_message()
     # if last_message and last_message != last_displayed_message:
     #     last_displayed_message = last_message
     #     with last_message_placeholder.container():
