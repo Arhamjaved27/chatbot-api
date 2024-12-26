@@ -15,45 +15,43 @@ last_message_placeholder = st.empty()
 # Function to fetch the last message
 def fetch_last_message():
     try:
-        response = requests.get(API_URL_MESSAGES)
+        response = requests.get(API_URL_LATEST_MESSAGE)
         if response.status_code == 200:
             return response.json()
-        elif response.status_code == 404:
-            return {"from": "System", "body": "No messages available", "timestamp": ""}
         else:
-            # st.error(f"Error fetching last message: {response.status_code}")
-            return None
+            st.error(f"Error fetching the latest message: {response.status_code}")
+            return {}
     except Exception as e:
         st.error(f"Error: {e}")
-        return None
+        return {}
+
 
 # Function to check for new messages
 def has_new_messages():
     try:
-        response = requests.get(API_URL_NEW_MESSAGES)
+        response = requests.get(API_URL_NEW_MESSAGE)
         if response.status_code == 200:
-            return response.json().get("new_messages", False)
+            return response.json().get("new_message", False)
         else:
             return False
     except Exception as e:
         return False
 
-# Placeholder to display messages
-messages_placeholder = st.empty()
+latest_message_placeholder = st.empty()
 
-# Polling loop
-st.write("Waiting for the latest message...")
-last_displayed_message = None
+# Polling loop to check for new messages
+st.write("Waiting for new messages...")
 while True:
     if has_new_messages():
         latest_message = fetch_last_message()
-        st.write("**New message received:**")
-        if latest_message:
-            st.write(f"**From:** {latest_message.get('from')}")
-            st.write(f"**Message:** {latest_message.get('body')}")
-            st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
-        else:
-            st.write("No messages available.")
+        with latest_message_placeholder.container():
+            st.write("**New message received:**")
+            if latest_message:
+                st.write(f"**From:** {latest_message.get('from')}")
+                st.write(f"**Message:** {latest_message.get('body')}")
+                st.write(f"**Timestamp:** {latest_message.get('timestamp')}")
+            else:
+                st.write("No messages available.")
     time.sleep(5)  # Poll every 5 seconds
 
 
