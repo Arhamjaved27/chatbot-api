@@ -47,7 +47,7 @@ while True:
         with latest_message_placeholder.container():
             st.write("**New message received:**")
             if latest_message:
-                st.write(f"**Message:** {latest_message}")
+                st.write(f"**Message:** {latest_message.get('body')}")
             else:
                 st.write("No messages available.")
     time.sleep(5)  # Poll every 5 seconds
