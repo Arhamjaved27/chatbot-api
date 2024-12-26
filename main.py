@@ -14,7 +14,7 @@ def fetch_latest_message():
     try:
         response = requests.get(API_URL_LATEST_MESSAGE)
         if response.status_code == 200:
-             latest_message = response.json()
+            latest_message = response.json()
             return latest_message
         else:
             st.error(f"Error fetching the latest message: {response.status_code}")
