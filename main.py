@@ -45,7 +45,7 @@ messages_placeholder = st.empty()
 st.write("Waiting for the latest message...")
 last_displayed_message = None
 while True:
-    if has_new_message():
+    if has_new_messages():
         latest_message = fetch_latest_message()
         with latest_message_placeholder.container():
             st.write("**New message received:**")
